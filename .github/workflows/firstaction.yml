@@ -6,9 +6,12 @@ name: Hello Actions
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+
   pull_request:
-    branches: [ "main" ]
+    types:
+      - closed
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -22,12 +25,23 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
+
+
+  pull-request:
+    env:
+      name: Maik
+
+    if: github.event_name = "pull_request"
+    needs: build
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
